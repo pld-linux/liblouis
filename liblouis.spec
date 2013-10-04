@@ -1,3 +1,7 @@
+#
+# Conditional build:
+%bcond_without	python3	# Python 3 binding
+#
 Summary:	Braille translator and back-translator library
 Summary(pl.UTF-8):	Biblioteka tłumacząca na i z alfabetu Braille'a
 Name:		liblouis
@@ -12,7 +16,8 @@ Patch0:		%{name}-info.patch
 URL:		http://code.google.com/p/liblouis/
 BuildRequires:	help2man
 BuildRequires:	pkgconfig
-BuildRequires:	python-devel >= 1:2.6
+BuildRequires:	python-modules >= 1:2.6
+%{?with_python3:BuildRequires:	python3-modules >= 3.2}
 BuildRequires:	rpmbuild(macros) >= 1.219
 BuildRequires:	sed >= 4.0
 BuildRequires:	texinfo
@@ -64,6 +69,18 @@ Python ctypes binding for liblouis.
 %description -n python-louis -l pl.UTF-8
 Wiązania Pythona oparte na ctypes do biblioteki liblouis.
 
+%package -n python3-louis
+Summary:	Python 3 ctypes binding for liblouis
+Summary(pl.UTF-8):	Wiązania Pythona 3 oparte na ctypes do biblioteki liblouis
+Group:		Development/Languages/Python
+Requires:	%{name} = %{version}-%{release}
+
+%description -n python3-louis
+Python 3 ctypes binding for liblouis.
+
+%description -n python3-louis -l pl.UTF-8
+Wiązania Pythona 3 oparte na ctypes do biblioteki liblouis.
+
 %prep
 %setup -q
 %patch0 -p1
@@ -87,6 +104,14 @@ LD_LIBRARY_PATH=$(pwd)/../liblouis/.libs \
 %{__python} setup.py install \
 	--optimize=2 \
 	--root=$RPM_BUILD_ROOT
+
+%if %{with python3}
+%{__rm} -r build
+LD_LIBRARY_PATH=$(pwd)/../liblouis/.libs \
+%{__python3} setup.py install \
+	--optimize=2 \
+	--root=$RPM_BUILD_ROOT
+%endif
 
 # obsoleted by pkg-config
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/liblouis.la
@@ -145,3 +170,13 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{py_sitescriptdir}/louis
 %{py_sitescriptdir}/louis/__init__.py[co]
 %{py_sitescriptdir}/louis-%{version}-py*.egg-info
+
+%if %{with python3}
+%files -n python3-louis
+%defattr(644,root,root,755)
+%doc python/README
+%dir %{py3_sitescriptdir}/louis
+%{py3_sitescriptdir}/louis/__init__.py
+%{py3_sitescriptdir}/louis/__pycache__
+%{py3_sitescriptdir}/louis-%{version}-py*.egg-info
+%endif
