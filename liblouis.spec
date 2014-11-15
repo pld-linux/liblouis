@@ -5,19 +5,19 @@
 Summary:	Braille translator and back-translator library
 Summary(pl.UTF-8):	Biblioteka tłumacząca na i z alfabetu Braille'a
 Name:		liblouis
-Version:	2.5.3
-Release:	2
+Version:	2.6.0
+Release:	1
 License:	LGPL v3+ (library), GPL v3+ (tools)
 Group:		Libraries
-#Source0-Download: http://code.google.com/p/liblouis/downloads/list
-Source0:	http://liblouis.googlecode.com/files/%{name}-%{version}.tar.gz
-# Source0-md5:	5de179044c5147b71c60ca0edbeaabab
+#Source0Download: http://www.liblouis.org/downloads/
+Source0:	https://github.com/liblouis/liblouis/releases/download/v%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	d829917d430649789b54ddde50be0d62
 Patch0:		%{name}-info.patch
-URL:		http://code.google.com/p/liblouis/
+URL:		http://www.liblouis.org/
 BuildRequires:	help2man
 BuildRequires:	pkgconfig
 BuildRequires:	python-modules >= 1:2.6
-%{?with_python3:BuildRequires:	python3-modules >= 3.2}
+%{?with_python3:BuildRequires:	python3-modules >= 1:3.2}
 BuildRequires:	rpmbuild(macros) >= 1.219
 BuildRequires:	sed >= 4.0
 BuildRequires:	texinfo
