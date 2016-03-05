@@ -1,26 +1,28 @@
 #
 # Conditional build:
+%bcond_without	python2	# Python 2 binding
 %bcond_without	python3	# Python 3 binding
 #
 Summary:	Braille translator and back-translator library
 Summary(pl.UTF-8):	Biblioteka tłumacząca na i z alfabetu Braille'a
 Name:		liblouis
-Version:	2.6.0
-Release:	4
+Version:	2.6.4
+Release:	1
 License:	LGPL v3+ (library), GPL v3+ (tools)
 Group:		Libraries
 #Source0Download: http://www.liblouis.org/downloads/
 Source0:	https://github.com/liblouis/liblouis/releases/download/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	d829917d430649789b54ddde50be0d62
+# Source0-md5:	ce419f475f8334a19276d034c5f0379b
 Patch0:		%{name}-info.patch
 URL:		http://www.liblouis.org/
 BuildRequires:	help2man
 BuildRequires:	pkgconfig
-BuildRequires:	python-modules >= 1:2.6
+%{?with_python2:BuildRequires:	python-modules >= 1:2.6}
 %{?with_python3:BuildRequires:	python3-modules >= 1:3.2}
-BuildRequires:	rpmbuild(macros) >= 1.219
+BuildRequires:	rpmbuild(macros) >= 1.714
 BuildRequires:	sed >= 4.0
-BuildRequires:	texinfo
+BuildRequires:	texinfo >= 5
+BuildRequires:	yaml-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -91,7 +93,21 @@ Wiązania Pythona 3 oparte na ctypes do biblioteki liblouis.
 %configure
 
 %{__make} \
-	dlname="liblouis.so.2"
+	dlname="liblouis.so.9"
+
+%if %{with python2}
+cd python
+LD_LIBRARY_PATH=$(pwd)/../liblouis/.libs \
+%py_build
+cd ..
+%endif
+
+%if %{with python2}
+cd python
+LD_LIBRARY_PATH=$(pwd)/../liblouis/.libs \
+%py3_build
+cd ..
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -99,18 +115,19 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+%if %{with python2}
 cd python
 LD_LIBRARY_PATH=$(pwd)/../liblouis/.libs \
-%{__python} setup.py install \
-	--optimize=2 \
-	--root=$RPM_BUILD_ROOT
+%py_install
+cd ..
+%py_postclean
+%endif
 
 %if %{with python3}
-%{__rm} -r build
+cd python
 LD_LIBRARY_PATH=$(pwd)/../liblouis/.libs \
-%{__python3} setup.py install \
-	--optimize=2 \
-	--root=$RPM_BUILD_ROOT
+%py3_install
+cd ..
 %endif
 
 # obsoleted by pkg-config
@@ -142,7 +159,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/lou_trace
 %attr(755,root,root) %{_bindir}/lou_translate
 %attr(755,root,root) %{_libdir}/liblouis.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/liblouis.so.2
+%attr(755,root,root) %ghost %{_libdir}/liblouis.so.9
 %{_datadir}/liblouis
 %{_mandir}/man1/lou_allround.1*
 %{_mandir}/man1/lou_checkhyphens.1*
@@ -163,6 +180,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_libdir}/liblouis.a
 
+%if %{with python2}
 %files -n python-louis
 %defattr(644,root,root,755)
 %doc python/README
@@ -170,6 +188,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{py_sitescriptdir}/louis
 %{py_sitescriptdir}/louis/__init__.py[co]
 %{py_sitescriptdir}/louis-%{version}-py*.egg-info
+%endif
 
 %if %{with python3}
 %files -n python3-louis
