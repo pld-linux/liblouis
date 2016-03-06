@@ -10,11 +10,11 @@ Version:	2.6.4
 Release:	1
 License:	LGPL v3+ (library), GPL v3+ (tools)
 Group:		Libraries
-#Source0Download: http://www.liblouis.org/downloads/
+#Source0Download: http://liblouis.org/downloads/
 Source0:	https://github.com/liblouis/liblouis/releases/download/v%{version}/%{name}-%{version}.tar.gz
 # Source0-md5:	ce419f475f8334a19276d034c5f0379b
 Patch0:		%{name}-info.patch
-URL:		http://www.liblouis.org/
+URL:		http://liblouis.org/
 BuildRequires:	help2man
 BuildRequires:	pkgconfig
 %{?with_python2:BuildRequires:	python-modules >= 1:2.6}
