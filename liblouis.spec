@@ -6,13 +6,13 @@
 Summary:	Braille translator and back-translator library
 Summary(pl.UTF-8):	Biblioteka tłumacząca na i z alfabetu Braille'a
 Name:		liblouis
-Version:	2.6.4
+Version:	2.6.5
 Release:	1
 License:	LGPL v3+ (library), GPL v3+ (tools)
 Group:		Libraries
 #Source0Download: http://liblouis.org/downloads/
 Source0:	https://github.com/liblouis/liblouis/releases/download/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	ce419f475f8334a19276d034c5f0379b
+# Source0-md5:	ccd5887a1888f1207c53b5d079f3f38b
 Patch0:		%{name}-info.patch
 URL:		http://liblouis.org/
 BuildRequires:	help2man
@@ -93,7 +93,7 @@ Wiązania Pythona 3 oparte na ctypes do biblioteki liblouis.
 %configure
 
 %{__make} \
-	dlname="liblouis.so.9"
+	dlname="liblouis.so.10"
 
 %if %{with python2}
 cd python
@@ -159,7 +159,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/lou_trace
 %attr(755,root,root) %{_bindir}/lou_translate
 %attr(755,root,root) %{_libdir}/liblouis.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/liblouis.so.9
+%attr(755,root,root) %ghost %{_libdir}/liblouis.so.10
 %{_datadir}/liblouis
 %{_mandir}/man1/lou_allround.1*
 %{_mandir}/man1/lou_checkhyphens.1*
