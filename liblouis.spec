@@ -6,13 +6,13 @@
 Summary:	Braille translator and back-translator library
 Summary(pl.UTF-8):	Biblioteka tłumacząca na i z alfabetu Braille'a
 Name:		liblouis
-Version:	3.2.0
-Release:	2
+Version:	3.8.0
+Release:	1
 License:	LGPL v2.1+ (library), GPL v3+ (tools)
 Group:		Libraries
 #Source0Download: http://liblouis.org/downloads/
 Source0:	https://github.com/liblouis/liblouis/releases/download/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	bff9275955610815803a86248c5e712f
+# Source0-md5:	3ea9f961d22258b16b55f0c55763dbcb
 Patch0:		%{name}-info.patch
 URL:		http://liblouis.org/
 BuildRequires:	help2man
@@ -20,6 +20,7 @@ BuildRequires:	pkgconfig
 %{?with_python2:BuildRequires:	python-modules >= 1:2.6}
 %{?with_python3:BuildRequires:	python3-modules >= 1:3.2}
 BuildRequires:	rpmbuild(macros) >= 1.714
+BuildRequires:	sed >= 4.0
 BuildRequires:	texinfo >= 5
 BuildRequires:	yaml-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -86,12 +87,14 @@ Wiązania Pythona 3 oparte na ctypes do biblioteki liblouis.
 %setup -q
 %patch0 -p1
 
+%{__sed} -i -e '1s,/usr/bin/env bash,/bin/bash,' tools/lou_maketable.d/lou_maketable.in
+
 %build
 %configure \
 	--enable-ucs4
 
 %{__make} -j1 \
-	dlname="liblouis.so.12"
+	dlname="liblouis.so.17"
 
 %if %{with python2}
 cd python
@@ -156,16 +159,18 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/lou_checkyaml
 %attr(755,root,root) %{_bindir}/lou_compare
 %attr(755,root,root) %{_bindir}/lou_debug
+%attr(755,root,root) %{_bindir}/lou_tableinfo
 %attr(755,root,root) %{_bindir}/lou_trace
 %attr(755,root,root) %{_bindir}/lou_translate
 %attr(755,root,root) %{_libdir}/liblouis.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/liblouis.so.14
+%attr(755,root,root) %ghost %{_libdir}/liblouis.so.17
 %{_datadir}/liblouis
 %{_mandir}/man1/lou_allround.1*
 %{_mandir}/man1/lou_checkhyphens.1*
 %{_mandir}/man1/lou_checktable.1*
 %{_mandir}/man1/lou_checkyaml.1*
 %{_mandir}/man1/lou_debug.1*
+%{_mandir}/man1/lou_tableinfo.1*
 %{_mandir}/man1/lou_trace.1*
 %{_mandir}/man1/lou_translate.1*
 
@@ -194,6 +199,9 @@ rm -rf $RPM_BUILD_ROOT
 %files -n python3-louis
 %defattr(644,root,root,755)
 %doc python/README
+%attr(755,root,root) %{_bindir}/lou_maketable
+# FIXME: should be in %{_datadir} or %{_libexecdir}
+%{_bindir}/lou_maketable.d
 %dir %{py3_sitescriptdir}/louis
 %{py3_sitescriptdir}/louis/__init__.py
 %{py3_sitescriptdir}/louis/__pycache__

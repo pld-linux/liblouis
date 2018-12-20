@@ -1,13 +1,13 @@
---- liblouis-2.5.3/doc/liblouis.texi.orig	2013-06-21 14:13:16.000000000 +0200
-+++ liblouis-2.5.3/doc/liblouis.texi	2013-10-04 20:09:54.107770348 +0200
-@@ -4,9 +4,9 @@
+--- liblouis-3.8.0/doc/liblouis.texi.orig	2018-12-20 21:35:09.955506856 +0100
++++ liblouis-3.8.0/doc/liblouis.texi	2018-12-20 21:35:44.488839795 +0100
+@@ -5,9 +5,9 @@
  @include version.texi
  @settitle Liblouis User's and Programmer's Manual
  
 -@dircategory Misc
 +@dircategory Miscellaneous:
  @direntry
--* Liblouis: (liblouis). A braille translator and back-translator 
+-* Liblouis: (liblouis). A braille translator and back-translator
 +* Liblouis: (liblouis).			A braille translator and back-translator
  @end direntry
  
