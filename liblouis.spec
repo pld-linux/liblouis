@@ -6,13 +6,13 @@
 Summary:	Braille translator and back-translator library
 Summary(pl.UTF-8):	Biblioteka tłumacząca na i z alfabetu Braille'a
 Name:		liblouis
-Version:	3.8.0
+Version:	3.9.0
 Release:	1
 License:	LGPL v2.1+ (library), GPL v3+ (tools)
 Group:		Libraries
 #Source0Download: http://liblouis.org/downloads/
 Source0:	https://github.com/liblouis/liblouis/releases/download/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	3ea9f961d22258b16b55f0c55763dbcb
+# Source0-md5:	c90c7f2fe3079ceb1c13b55fee07e08a
 Patch0:		%{name}-info.patch
 URL:		http://liblouis.org/
 BuildRequires:	help2man
