@@ -6,13 +6,13 @@
 Summary:	Braille translator and back-translator library
 Summary(pl.UTF-8):	Biblioteka tłumacząca na i z alfabetu Braille'a
 Name:		liblouis
-Version:	3.11.0
-Release:	2
+Version:	3.12.0
+Release:	1
 License:	LGPL v2.1+ (library), GPL v3+ (tools)
 Group:		Libraries
 #Source0Download: http://liblouis.org/downloads/
 Source0:	https://github.com/liblouis/liblouis/releases/download/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	e749d3c0933f60dbd3f7ee94034ec214
+# Source0-md5:	bbe64fa0184dcb76ad2117cf2952f0f2
 Patch0:		%{name}-info.patch
 URL:		http://liblouis.org/
 BuildRequires:	help2man
@@ -157,13 +157,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/lou_checkhyphens
 %attr(755,root,root) %{_bindir}/lou_checktable
 %attr(755,root,root) %{_bindir}/lou_checkyaml
-%attr(755,root,root) %{_bindir}/lou_compare
 %attr(755,root,root) %{_bindir}/lou_debug
 %attr(755,root,root) %{_bindir}/lou_tableinfo
 %attr(755,root,root) %{_bindir}/lou_trace
 %attr(755,root,root) %{_bindir}/lou_translate
 %attr(755,root,root) %{_libdir}/liblouis.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/liblouis.so.19
+%attr(755,root,root) %ghost %{_libdir}/liblouis.so.20
 %{_datadir}/liblouis
 %{_mandir}/man1/lou_allround.1*
 %{_mandir}/man1/lou_checkhyphens.1*
