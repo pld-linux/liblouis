@@ -64,6 +64,7 @@ Summary:	Python ctypes binding for liblouis
 Summary(pl.UTF-8):	Wiązania Pythona oparte na ctypes do biblioteki liblouis
 Group:		Development/Languages/Python
 Requires:	%{name} = %{version}-%{release}
+BuildArch:	noarch
 
 %description -n python-louis
 Python ctypes binding for liblouis.
@@ -76,6 +77,7 @@ Summary:	Python 3 ctypes binding for liblouis
 Summary(pl.UTF-8):	Wiązania Pythona 3 oparte na ctypes do biblioteki liblouis
 Group:		Development/Languages/Python
 Requires:	%{name} = %{version}-%{release}
+BuildArch:	noarch
 
 %description -n python3-louis
 Python 3 ctypes binding for liblouis.
