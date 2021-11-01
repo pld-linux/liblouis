@@ -1,23 +1,21 @@
 #
 # Conditional build:
-%bcond_without	python2	# Python 2 binding
 %bcond_without	python3	# Python 3 binding
 #
 Summary:	Braille translator and back-translator library
 Summary(pl.UTF-8):	Biblioteka tłumacząca na i z alfabetu Braille'a
 Name:		liblouis
-Version:	3.15.0
-Release:	2
+Version:	3.18.0
+Release:	1
 License:	LGPL v2.1+ (library), GPL v3+ (tools)
 Group:		Libraries
 #Source0Download: http://liblouis.org/downloads/
 Source0:	https://github.com/liblouis/liblouis/releases/download/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	ea605d9b55d5fc142a0678eb88bbf9d8
+# Source0-md5:	7e220b213ad9084d6010bbb0f14ac7d5
 Patch0:		%{name}-info.patch
 URL:		http://liblouis.org/
 BuildRequires:	help2man
 BuildRequires:	pkgconfig
-%{?with_python2:BuildRequires:	python-modules >= 1:2.6}
 %{?with_python3:BuildRequires:	python3-modules >= 1:3.2}
 BuildRequires:	rpmbuild(macros) >= 1.714
 BuildRequires:	sed >= 4.0
@@ -59,19 +57,6 @@ Static liblouis library.
 %description static -l pl.UTF-8
 Statyczna biblioteka liblouis.
 
-%package -n python-louis
-Summary:	Python ctypes binding for liblouis
-Summary(pl.UTF-8):	Wiązania Pythona oparte na ctypes do biblioteki liblouis
-Group:		Development/Languages/Python
-Requires:	%{name} = %{version}-%{release}
-BuildArch:	noarch
-
-%description -n python-louis
-Python ctypes binding for liblouis.
-
-%description -n python-louis -l pl.UTF-8
-Wiązania Pythona oparte na ctypes do biblioteki liblouis.
-
 %package -n python3-louis
 Summary:	Python 3 ctypes binding for liblouis
 Summary(pl.UTF-8):	Wiązania Pythona 3 oparte na ctypes do biblioteki liblouis
@@ -98,14 +83,7 @@ Wiązania Pythona 3 oparte na ctypes do biblioteki liblouis.
 %{__make} -j1 \
 	dlname="liblouis.so.20"
 
-%if %{with python2}
-cd python
-LD_LIBRARY_PATH=$(pwd)/../liblouis/.libs \
-%py_build
-cd ..
-%endif
-
-%if %{with python2}
+%if %{with python3}
 cd python
 LD_LIBRARY_PATH=$(pwd)/../liblouis/.libs \
 %py3_build
@@ -118,14 +96,6 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-%if %{with python2}
-cd python
-LD_LIBRARY_PATH=$(pwd)/../liblouis/.libs \
-%py_install
-cd ..
-%py_postclean
-%endif
-
 %if %{with python3}
 cd python
 LD_LIBRARY_PATH=$(pwd)/../liblouis/.libs \
@@ -137,8 +107,6 @@ cd ..
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/liblouis.la
 # packaged as %doc
 %{__rm} -r $RPM_BUILD_ROOT%{_docdir}/liblouis
-
-%py_postclean
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -187,19 +155,10 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_libdir}/liblouis.a
 
-%if %{with python2}
-%files -n python-louis
-%defattr(644,root,root,755)
-%doc python/README
-%dir %{py_sitescriptdir}/louis
-%{py_sitescriptdir}/louis/__init__.py[co]
-%{py_sitescriptdir}/louis-%{version}-py*.egg-info
-%endif
-
 %if %{with python3}
 %files -n python3-louis
 %defattr(644,root,root,755)
-%doc python/README
+%doc python/README.md
 %attr(755,root,root) %{_bindir}/lou_maketable
 # FIXME: should be in %{_datadir} or %{_libexecdir}
 %{_bindir}/lou_maketable.d
