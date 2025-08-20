@@ -5,13 +5,13 @@
 Summary:	Braille translator and back-translator library
 Summary(pl.UTF-8):	Biblioteka tłumacząca na i z alfabetu Braille'a
 Name:		liblouis
-Version:	3.33.0
+Version:	3.34.0
 Release:	1
 License:	LGPL v2.1+ (library), GPL v3+ (tools)
 Group:		Libraries
 #Source0Download: https://liblouis.io/downloads/
 Source0:	https://github.com/liblouis/liblouis/releases/download/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	1057f9a6fcd9c209f6fbf9a5e6e54727
+# Source0-md5:	120661c78272939d8e6f5541bd79c628
 Patch0:		%{name}-info.patch
 URL:		https://liblouis.io/
 BuildRequires:	help2man
@@ -105,8 +105,6 @@ cd ..
 
 # obsoleted by pkg-config
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/liblouis.la
-# packaged as %doc
-%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/liblouis
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -145,7 +143,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%doc HACKING doc/liblouis.html
+%doc HACKING
 %attr(755,root,root) %{_libdir}/liblouis.so
 %{_includedir}/liblouis
 %{_pkgconfigdir}/liblouis.pc
