@@ -5,19 +5,25 @@
 Summary:	Braille translator and back-translator library
 Summary(pl.UTF-8):	Biblioteka tłumacząca na i z alfabetu Braille'a
 Name:		liblouis
-Version:	3.34.0
+Version:	3.38.0
 Release:	1
 License:	LGPL v2.1+ (library), GPL v3+ (tools)
 Group:		Libraries
 #Source0Download: https://liblouis.io/downloads/
 Source0:	https://github.com/liblouis/liblouis/releases/download/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	120661c78272939d8e6f5541bd79c628
+# Source0-md5:	1f462ca32dafcdacdd74843de9ed5b49
 Patch0:		%{name}-info.patch
 URL:		https://liblouis.io/
 BuildRequires:	help2man
 BuildRequires:	pkgconfig
-%{?with_python3:BuildRequires:	python3-modules >= 1:3.2}
-BuildRequires:	rpmbuild(macros) >= 1.714
+%if %{with python3}
+BuildRequires:	python3-build
+BuildRequires:	python3-installer
+BuildRequires:	python3-modules >= 1:3.10
+BuildRequires:	python3-setuptools >= 1:61.0
+%endif
+BuildRequires:	rpm-build >= 4.6
+BuildRequires:	rpmbuild(macros) >= 2.044
 BuildRequires:	sed >= 4.0
 BuildRequires:	texinfo >= 5
 BuildRequires:	yaml-devel
@@ -85,8 +91,8 @@ Wiązania Pythona 3 oparte na ctypes do biblioteki liblouis.
 
 %if %{with python3}
 cd python
-LD_LIBRARY_PATH=$(pwd)/../liblouis/.libs \
-%py3_build
+export LD_LIBRARY_PATH=$(pwd)/../liblouis/.libs
+%py3_build_pyproject
 cd ..
 %endif
 
@@ -98,8 +104,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %if %{with python3}
 cd python
-LD_LIBRARY_PATH=$(pwd)/../liblouis/.libs \
-%py3_install
+export LD_LIBRARY_PATH=$(pwd)/../liblouis/.libs \
+%py3_install_pyproject
 cd ..
 %endif
 
@@ -129,8 +135,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/lou_tableinfo
 %attr(755,root,root) %{_bindir}/lou_trace
 %attr(755,root,root) %{_bindir}/lou_translate
-%attr(755,root,root) %{_libdir}/liblouis.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/liblouis.so.20
+%{_libdir}/liblouis.so.*.*.*
+%ghost %{_libdir}/liblouis.so.20
 %{_datadir}/liblouis
 %{_mandir}/man1/lou_allround.1*
 %{_mandir}/man1/lou_checkhyphens.1*
@@ -144,7 +150,7 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %doc HACKING
-%attr(755,root,root) %{_libdir}/liblouis.so
+%{_libdir}/liblouis.so
 %{_includedir}/liblouis
 %{_pkgconfigdir}/liblouis.pc
 %{_infodir}/liblouis.info*
@@ -163,5 +169,5 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{py3_sitescriptdir}/louis
 %{py3_sitescriptdir}/louis/__init__.py
 %{py3_sitescriptdir}/louis/__pycache__
-%{py3_sitescriptdir}/louis-%{version}-py*.egg-info
+%{py3_sitescriptdir}/louis-%{version}.dist-info
 %endif
